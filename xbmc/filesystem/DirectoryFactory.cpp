@@ -116,6 +116,10 @@
 #if defined(TARGET_ANDROID)
 #include "AndroidAppDirectory.h"
 #endif
+#include "addons/VFSEntry.h"
+#include "addons/AddonManager.h"
+
+using namespace ADDON;
 
 using namespace XFILE;
 
@@ -237,6 +241,18 @@ IDirectory* CDirectoryFactory::Create(const CStdString& strPath)
 #ifdef HAVE_LIBBLURAY
       if (strProtocol == "bluray") return new CBlurayDirectory();
 #endif
+  }
+
+  if (!strProtocol.empty())
+  {
+    VECADDONS addons;
+    CAddonMgr::Get().GetAddons(ADDON_VFS, addons);
+    for (size_t i=0;i<addons.size();++i)
+    {
+      VFSEntryPtr vfs(boost::static_pointer_cast<CVFSEntry>(addons[i]));
+      if (vfs->HasDirectories() && vfs->GetProtocols().find(strProtocol) != std::string::npos)
+        return new CVFSEntryIDirectoryWrapper(CVFSEntryManager::Get().GetAddon(vfs->ID()));
+    }
   }
 
   CLog::Log(LOGWARNING, "%s - Unsupported protocol(%s) in %s", __FUNCTION__, strProtocol.c_str(), url.Get().c_str() );
