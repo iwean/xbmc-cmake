@@ -90,9 +90,6 @@
 #ifdef HAS_ZEROCONF
 #include "ZeroconfDirectory.h"
 #endif
-#ifdef HAS_FILESYSTEM_AFP
-#include "AFPDirectory.h"
-#endif
 #ifdef HAVE_LIBBLURAY
 #include "BlurayDirectory.h"
 #endif
@@ -195,9 +192,6 @@ IDirectory* CDirectoryFactory::Create(const CStdString& strPath)
 #endif
 #ifdef HAS_ZEROCONF
     if (strProtocol == "zeroconf") return new CZeroconfDirectory();
-#endif
-#ifdef HAS_FILESYSTEM_AFP
-      if (strProtocol == "afp") return new CAFPDirectory();
 #endif
 #ifdef HAVE_LIBBLURAY
       if (strProtocol == "bluray") return new CBlurayDirectory();
