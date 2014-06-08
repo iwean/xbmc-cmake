@@ -24,7 +24,6 @@
 #include "network/Network.h"
 #include "system.h"
 #include "DirectoryFactory.h"
-#include "HDDirectory.h"
 #include "SpecialProtocolDirectory.h"
 #include "MultiPathDirectory.h"
 #include "StackDirectory.h"
@@ -48,6 +47,8 @@
 
 #ifdef TARGET_POSIX
 #include "posix/PosixDirectory.h"
+#else
+#include "HDDirectory.h"
 #endif
 #ifdef HAS_FILESYSTEM_SMB
 #ifdef TARGET_WINDOWS
